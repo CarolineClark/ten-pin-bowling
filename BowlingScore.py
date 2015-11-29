@@ -52,33 +52,36 @@ class BowlingScore():
 
         if len(self.score) >= 10:
             raise TooManyFramesError
-
-        # Check all the pin elements are integers.
         if not all(isinstance(x, int) for x in args):
             raise NotIntegerPinError
-        # That they are non negative.
         if not all(x >= 0 for x in args):
             raise NegativePinError
 
         # For the number of frames less than or equal to 9, check the number of
         # tries is less than 2, and no more than 10 pins are knocked down
         if len(self._score) < 9:
-            if not len(args) == 2:
-                raise WrongTriesInFrame
-            if sum(args) > 10:
-                raise TooBigPinError
-
-            # Total is None to indicate it needs calculating
-            self._score.append({"pins": args, "total": None})
+            self._add_regular_fetch_score(args)
 
         # Last fetch has slightly different rules
         elif len(self._score) == 9:
-            if not len(args) == 2 or len(args) == 3:
-                raise WrongTriesInFrame
-            if sum(args) > 30:
-                raise TooBigPinError
+            self._add_last_fetch_score(args)
 
-            self._score.append({"pins": args, "total": None})
+    def _add_regular_fetch_score(self, pin_scores):
+        if not len(pin_scores) == 2:
+            raise WrongTriesInFrame
+        if sum(pin_scores) > 10:
+            raise TooBigPinError
+
+        # Total is None to indicate it needs calculating
+        self._score.append({"pins": pin_scores, "total": None})
+
+    def _add_last_fetch_score(self, pin_scores):
+        if not len(pin_scores) == 2 or len(pin_scores) == 3:
+            raise WrongTriesInFrame
+        if sum(pin_scores) > 30:
+            raise TooBigPinError
+
+        self._score.append({"pins": pin_scores, "total": None})
 
     def calculate_total(self):
         pass
