@@ -40,13 +40,17 @@ class BowlingScore():
         return self._score
 
     def get_totals(self):
-        pass
+        return [x["total"] for x in self.score]
+
+    def get_pins(self):
+        return [x["pins"] for x in self.score]
 
     def add_pins(self, *args):
         '''
         Add tuple of pin scores.
         '''
-        if len(self.score) > 10:
+
+        if len(self.score) >= 10:
             raise TooManyFramesError
 
         # Check all the pin elements are integers.
@@ -58,13 +62,22 @@ class BowlingScore():
 
         # For the number of frames less than or equal to 9, check the number of
         # tries is less than 2, and no more than 10 pins are knocked down
-        if len(self._score) <= 9:
+        if len(self._score) < 9:
             if not len(args) == 2:
                 raise WrongTriesInFrame
             if sum(args) > 10:
                 raise TooBigPinError
 
             # Total is None to indicate it needs calculating
+            self._score.append({"pins": args, "total": None})
+
+        # Last fetch has slightly different rules
+        elif len(self._score) == 9:
+            if not len(args) == 2 or len(args) == 3:
+                raise WrongTriesInFrame
+            if sum(args) > 30:
+                raise TooBigPinError
+
             self._score.append({"pins": args, "total": None})
 
     def calculate_total(self):
