@@ -27,7 +27,7 @@
 
 
 import unittest
-from bowling import (
+from BowlingScore import (
     BowlingScore, NegativePinError, NotIntegerPinError, TooBigPinError
 )
 
@@ -81,15 +81,15 @@ class KnownValues(unittest.TestCase):
 
 class BadPinValues(unittest.TestCase):
 
-    def pins_negative(self):
+    def test_negative(self):
         score = BowlingScore()
         self.assertRaises(NegativePinError, score.add_pins, (-1, 2))
 
-    def pins_fractional(self):
+    def test_fractional(self):
         score = BowlingScore()
         self.assertRaises(NotIntegerPinError, score.add_pins, (0.5, 2))
 
-    def pins_too_many(self):
+    def test_too_many(self):
         score = BowlingScore()
         self.assertRaises(TooBigPinError, score.add_pins, (7, 7))
 
