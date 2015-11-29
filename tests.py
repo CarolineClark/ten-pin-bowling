@@ -109,5 +109,13 @@ class BadPinValues(unittest.TestCase):
         self.assertRaises(TooManyFramesError, score.add_pins, 1, 1)
 
 
+class BonusPinTests(unittest.TestCase):
+
+    def test_no_bonus(self):
+        score = BowlingScore()
+        score.add_pins(2, 1)
+        self.assertEqual(score.get_last_total(), 3)
+
+
 if __name__ == "__main__":
     unittest.main()
