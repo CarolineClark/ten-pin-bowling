@@ -98,6 +98,10 @@ class BadPinValues(unittest.TestCase):
         score = BowlingScore()
         self.assertRaises(WrongTriesInFrame, score.add_pins, 1, 1, 1)
 
+    def test_too_few_tries(self):
+        score = BowlingScore()
+        self.assertRaises(WrongTriesInFrame, score.add_pins, 1)
+
     def test_too_many_fetches(self):
         score = BowlingScore()
         for i in range(10):
