@@ -83,15 +83,15 @@ class BadPinValues(unittest.TestCase):
 
     def test_negative(self):
         score = BowlingScore()
-        self.assertRaises(NegativePinError, score.add_pins, (-1, 2))
+        self.assertRaises(NegativePinError, score.add_pins, -1, 2)
 
     def test_fractional(self):
         score = BowlingScore()
-        self.assertRaises(NotIntegerPinError, score.add_pins, (0.5, 2))
+        self.assertRaises(NotIntegerPinError, score.add_pins, 0.5, 2)
 
     def test_too_many(self):
         score = BowlingScore()
-        self.assertRaises(TooBigPinError, score.add_pins, (7, 7))
+        self.assertRaises(TooBigPinError, score.add_pins, 7, 7)
 
 
 if __name__ == "__main__":
