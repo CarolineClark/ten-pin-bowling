@@ -28,7 +28,8 @@
 
 import unittest
 from BowlingScore import (
-    BowlingScore, NegativePinError, NotIntegerPinError, TooBigPinError
+    BowlingScore, NegativePinError, NotIntegerPinError, TooBigPinError,
+    WrongTriesInFrame, TooManyFramesError
 )
 
 
@@ -89,9 +90,19 @@ class BadPinValues(unittest.TestCase):
         score = BowlingScore()
         self.assertRaises(NotIntegerPinError, score.add_pins, 0.5, 2)
 
-    def test_too_many(self):
+    def test_big_total(self):
         score = BowlingScore()
         self.assertRaises(TooBigPinError, score.add_pins, 7, 7)
+
+    def test_too_many_tries(self):
+        score = BowlingScore()
+        self.assertRaises(WrongTriesInFrame, score.add_pins, 1, 1, 1)
+
+    def test_too_many_fetches(self):
+        score = BowlingScore()
+        for i in range(10):
+            score.add_pins(1, 1)
+        self.assertRaises(TooManyFramesError, score.add_pins, 1, 1)
 
 
 if __name__ == "__main__":
